@@ -1,2 +1,2 @@
 # Software
-This is the GitHub repository for software of the "Eyes of Things" project (http://eyesofthings.eu).
+This is the GitHub repository for open source software developed within the "Eyes of Things" project (http://eyesofthings.eu).
