@@ -1,0 +1,72 @@
+# create SDCardIO static library
+
+# Specify extensions of files to delete when cleaning
+CLEAN_FILENAME_EXTENSIONS = o a 
+
+# Specify the library name, target file and the install directory
+LIBRARY_NAME = SDCardIO
+LIBRARY_FILENAME = lib$(LIBRARY_NAME).a
+INSTALLDIR ?= ../build
+
+
+MV_SOC_PLATFORM ?= myriad2
+MV_SOC_OS ?= rtems
+MV_IC ?= MA2100
+
+# Add a include path
+CC_INCLUDE += -I $(DirAppRoot)
+# Add header files
+LEON_LIBRARY_C_HEADERS = SDCardIO.h
+LEON_LIBRARY_C_HEADERS += SDCardIORTEMSConfig.h
+# Add source files
+LEON_LIBRARY_C_SOURCES = SDCardIO.c
+# install files
+INSTALL_FILES = README_SDCardIO.md
+
+# Enable C99
+CCOPT += -std=gnu99
+
+# Set MV_COMMON_BASE relative to mdk directory location (but allow user to override in environment)
+MV_COMMON_BASE  ?= $(MV_TOOLS_DIR)/../mdk/common
+
+# Include mdk settings
+include $(MV_COMMON_BASE)/generalsettings.mk
+include $(MV_COMMON_BASE)/toolssettings.mk
+include $(MV_COMMON_BASE)/includessettings.mk
+include $(MV_COMMON_BASE)/commonsources.mk
+# Point to the correct ranlib binary
+RANLIB = $(MV_TOOLS_BASE)/$(DETECTED_PLATFORM)/$(SPARC_DIR)/bin/$(MV_GCC_TOOLS)-ranlib
+# create a object file list
+LEON_LIBRARY_OBJECTS = $(patsubst %.c,%.o,$(LEON_LIBRARY_C_SOURCES))
+
+
+# Pattern rule to build an object file from a .c file
+%.o: %.c
+	$(CC) -c $(CCOPT) -o $@ $< 
+
+# Default target
+.PHONY: all
+all: $(LIBRARY_FILENAME)
+
+# Build
+$(LIBRARY_FILENAME): $(LEON_LIBRARY_OBJECTS)
+	$(AR) rc $@ $^
+	$(RANLIB) $@
+	echo $(TEST)
+
+
+.PHONY: install
+install: 
+	mkdir -p $(INSTALLDIR)/$(LIBRARY_NAME)
+	cp -p $(INSTALL_FILES) $(INSTALLDIR)/$(LIBRARY_NAME)
+	mkdir -p $(INSTALLDIR)/$(LIBRARY_NAME)/include
+	cp $(LEON_LIBRARY_C_HEADERS) $(INSTALLDIR)/$(LIBRARY_NAME)/include
+	mkdir -p $(INSTALLDIR)/$(LIBRARY_NAME)/lib
+	cp -p $(LIBRARY_FILENAME) $(INSTALLDIR)/$(LIBRARY_NAME)/lib
+	$(MAKE) -f CryptoMakefile clean; 
+	$(MAKE) -f CryptoMakefile all MV_SOC_OS=$(MV_SOC_OS); 
+	$(MAKE) -f CryptoMakefile install; 
+	$(MAKE) -f CryptoMakefile clean;
+.PHONY: clean 
+clean:
+	rm -rf  $(LEON_LIBRARY_OBJECTS) $(LIBRARY_FILENAME)
