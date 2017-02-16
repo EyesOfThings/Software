@@ -1,4 +1,0 @@
-_RAM_START_LOS = 0x80000000;
-_RAM_SIZE_LOS =  64M;
-_DDR_SECT_START = (_RAM_START_LOS + _RAM_SIZE_LOS);
-INCLUDE myriad2_default_memory_map_elf.ldscript
