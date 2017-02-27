@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_list">
+        <item>Login</item>
+        <item>MQTT Client</item>
+        <item>WiFi</item>
+        <item><![CDATA[Time & Date]]></item>
+        <item>App</item>
+        <item>SD Card</item>
+        <item>Camera</item>
+    </string-array>
+</resources>

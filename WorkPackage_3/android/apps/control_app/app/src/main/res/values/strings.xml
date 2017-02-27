@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">EoT Control App</string>
+    <!-- Login Page -->
+    <string name="login">Login</string>
+    <string name="broker_address">Broker address:</string>
+    <string name="port">Port:</string>
+    <string name="default_broker_address_value">192.168.1.1</string>
+    <string name="dafault_broker_port_value">1883</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <!-- MQTTClient Page -->
+    <string name="subscriptions">Subscriptions</string>
+    <string name="publish">Publish</string>
+    <string name="topic">Topic:</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="messages_received">Messages Received:</string>
+    <!-- SDCard Page -->
+    <string name="overview">Overview</string>
+    <string name="download">Download</string>
+    <string name="upload">Upload</string>
+</resources>

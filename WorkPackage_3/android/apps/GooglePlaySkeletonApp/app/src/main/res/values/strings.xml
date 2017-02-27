@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">GooglePlaySkeletonApp</string>
+    <string name="title_activity_main">EoT Skeleton App</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="menu_list">
+        <item>Connect</item>
+        <item>Upload</item>
+        <item>Status</item>
+        <item>Credits</item>
+    </string-array>
+    <string name="variableMQTTClient">MQTT_CLIENT</string>
+    <string name="variableMQTTBrokerIp">MQTT_BROKER_IP</string>
+    <string name="variableMQTTBrokerPort">MQTT_BROKER_PORT</string>
+</resources>

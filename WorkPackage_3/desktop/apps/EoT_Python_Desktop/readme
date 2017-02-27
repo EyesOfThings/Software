@@ -1,0 +1,3 @@
+
+Since sometimes the client sends the unsubscription message using a different
+socket, the unsubscrition to the reserved topics is managed by the Pulga broker.
