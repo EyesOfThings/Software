@@ -1,6 +1,6 @@
 /* Structures for JSON parsing using only fixed-extent memory
  *
- * This implementation is based on MircoJSON 1.3, which can be found unmodified
+ * This implementation is based on MicroJSON 1.3, which can be found unmodified
  * at: http://www.catb.org/esr/microjson/
  * This is the original copyright notice:
  * This file is Copyright (c) 2014 by Eric S. Raymond.
