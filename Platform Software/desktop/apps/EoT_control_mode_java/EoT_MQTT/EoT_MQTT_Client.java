@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -72,6 +73,7 @@ public class EoT_MQTT_Client implements MqttCallback {
     private int result; 
     /*Variables used to order received packages*/
     private byte[] fileData = null;
+    ArrayList<byte[]> fileDataComplete = new ArrayList<byte[]>();
     private int fileLength = 0;
     private int actual_packet = 0;
     private boolean first_package = true;
@@ -267,30 +269,38 @@ public class EoT_MQTT_Client implements MqttCallback {
                     fileLength = Integer.parseInt(new String(messageArrived.getPayload()));
                     first_package = false;
                     log("File received, to receive " + fileLength + " packets");
+                    fileDataComplete = new ArrayList<byte[]>();
                 } else {
-                    log("Packet " + actual_packet + " received");
-                    if (actual_packet == 0) {
-                        fileData = messageArrived.getPayload();
-                    } else {
-                        byte[] b = messageArrived.getPayload();
-                        byte[] c = new byte[fileData.length + b.length];
-                        System.arraycopy(fileData, 0, c, 0, fileData.length);
-                        System.arraycopy(b, 0, c, fileData.length, b.length);
-                        fileData = c;
-                    }
+
+                    //if (actual_packet == 0) {
+                    fileData = messageArrived.getPayload();
+
+                    byte[] c = new byte[fileData.length];
+                    System.arraycopy(fileData, 0, c, 0, fileData.length);
+                    fileDataComplete.add(c);
+
+                    /*} else {
+                     byte[] b = messageArrived.getPayload();
+                     byte[] c = new byte[fileData.length + b.length];
+                     System.arraycopy(fileData, 0, c, 0, fileData.length);
+                     System.arraycopy(b, 0, c, fileData.length, b.length);
+                     fileData = c;
+                     }*/
                     actual_packet++;
                 }
                 if (actual_packet == fileLength) {
                     log("Saving file...");
                     //Write file with data
                     FileOutputStream fos = new FileOutputStream(this.destPath);
-                    byte[] data = fileData;
-                    fos.write(data);
+                    for (int z = 0; z < fileDataComplete.size(); z++) {
+                        byte[] data = fileDataComplete.get(z);
+                        fos.write(data);
+                    }
+
                     fos.close();
                     log("File saved!");
                     actual_packet = 0;
                     first_package = true;
-                    operationDone = true;
                     this.mainFrame.showDialog("File received!");
                 }
                 break;
